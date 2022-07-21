@@ -9,18 +9,18 @@ export default {
   name: 'ElPagination',
 
   props: {
-    //每页显示条目个数，支持 .sync 修饰符
+    // 每页显示条目个数，支持 .sync 修饰符
     pageSize: {
       type: Number,
       default: 10
     },
-    //是否使用小型分页样式
+    // 是否使用小型分页样式
     small: Boolean,
     // 总条目数
     total: Number,
-   //总页数，total 和 page-count 设置任意一个就可以达到显示页码的功能；如果要支持 page-sizes 的更改，则需要使用 total 属性
+    // 总页数，total 和 page-count 设置任意一个就可以达到显示页码的功能；如果要支持 page-sizes 的更改，则需要使用 total 属性
     pageCount: Number,
-   //页码按钮的数量，当总页数超过该值时会折叠
+    // 页码按钮的数量，当总页数超过该值时会折叠
     pagerCount: {
       type: Number,
       validator(value) {
@@ -33,11 +33,11 @@ export default {
       type: Number,
       default: 1
     },
-    //组件布局，子组件名用逗号分隔
+    // 组件布局，子组件名用逗号分隔
     layout: {
       default: 'prev, pager, next, jumper, ->, total'
     },
-    //每页显示个数选择器的选项设置
+    // 每页显示个数选择器的选项设置
     pageSizes: {
       type: Array,
       default() {
@@ -54,7 +54,7 @@ export default {
     background: Boolean,
     // 是否禁用
     disabled: Boolean,
-    //只有一页时是否隐藏
+    // 只有一页时是否隐藏
     hideOnSinglePage: Boolean
   },
 
@@ -70,10 +70,10 @@ export default {
   },
   // render函数生成el-pagination
   render(h) {
-    //this.layout就是之前我们在props里面定义的组件布局，如果每页子组件那么就显示null
+    // this.layout就是之前我们在props里面定义的组件布局，如果每页子组件那么就显示null
     const layout = this.layout;
     if (!layout) return null;
-    //处理只有一页是否隐藏
+    // 处理只有一页是否隐藏
     if (this.hideOnSinglePage && (!this.internalPageCount || this.internalPageCount === 1)) return null;
 
     // 最外层的div template 是一个父容器模板，定义的时候可以先处理它的样式，包括背景以及小样式设定
@@ -82,13 +82,13 @@ export default {
       'el-pagination--small': this.small
     }] }></div>;
 
-    //TEMPLATE_MAP 是一个组件集合，里面涉及的组件会在后面定义
+    // TEMPLATE_MAP 是一个组件集合，里面涉及的组件会在后面定义
     const TEMPLATE_MAP = {
-      prev: <prev></prev>,// 上一页
-      jumper: <jumper></jumper>,// 跳转 前往多少页
+      prev: <prev></prev>, // 上一页
+      jumper: <jumper></jumper>, // 跳转 前往多少页
       pager: <pager currentPage={ this.internalCurrentPage } pageCount={ this.internalPageCount } pagerCount={ this.pagerCount } on-change={ this.handleCurrentChange } disabled={ this.disabled }></pager>,
-      next: <next></next>,// 下一页
-      sizes: <sizes pageSizes={ this.pageSizes }></sizes>,// 每页显示条目个数
+      next: <next></next>, // 下一页
+      sizes: <sizes pageSizes={ this.pageSizes }></sizes>, // 每页显示条目个数
       slot: <slot>{ this.$slots.default ? this.$slots.default : '' }</slot>,
       total: <total></total>// 总共的页数
     };
@@ -139,7 +139,7 @@ export default {
         );
       }
     },
-   // 下一页组件 当前页数等于总页数时 或者 总页数等于0时，下一页按钮被禁用
+    // 下一页组件 当前页数等于总页数时 或者 总页数等于0时，下一页按钮被禁用
     Next: {
       render(h) {
         return (
@@ -157,12 +157,12 @@ export default {
         );
       }
     },
-  // 每页显示条目个数组件
+    // 每页显示条目个数组件
     Sizes: {
       mixins: [Locale],
 
-      props: { 
-        pageSizes: Array  // 每页显示个数选择器的选项设置   [10, 20, 30, 40, 50 ]
+      props: {
+        pageSizes: Array // 每页显示个数选择器的选项设置   [10, 20, 30, 40, 50 ]
       },
 
       watch: {
@@ -214,9 +214,9 @@ export default {
           if (val !== this.$parent.internalPageSize) {
             this.$parent.internalPageSize = val = parseInt(val, 10);
             this.$parent.userChangePageSize = true;
-            //如果父组件中pageSize用了.sync 修饰符，这里将会触发父组件的update，改变pageSize的值
+            // 如果父组件中pageSize用了.sync 修饰符，这里将会触发父组件的update，改变pageSize的值
             this.$parent.$emit('update:pageSize', val);
-            //触发父组件的size-change事件，将改变的每页显示的条目个数的值传递出去
+            // 触发父组件的size-change事件，将改变的每页显示的条目个数的值传递出去
             this.$parent.$emit('size-change', val);
           }
         }

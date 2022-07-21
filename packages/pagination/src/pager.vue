@@ -38,6 +38,7 @@
       class="number"
       v-if="pageCount > 1">{{ pageCount }}</li>
       <!-- 总页数 -->
+      <!-- <li>{{internalPageSize}}</li> -->
   </ul>
 </template>
 
@@ -57,13 +58,17 @@
     },
 
     watch: {
-      // 是否显示<<     el-icon-more对应的是...的字体图标
+      // 是否显示<<  el-icon-more对应的是...的字体图标
       showPrevMore(val) {
         if (!val) this.quickprevIconClass = 'el-icon-more';
       },
       // 是否显示>>
       showNextMore(val) {
         if (!val) this.quicknextIconClass = 'el-icon-more';
+      },
+      internalPageSize(val) {
+        console.log('----------------------')
+        console.log(val)
       }
     },
 
@@ -124,7 +129,7 @@
     computed: {
       // example < 1 ... 3 4 5 6 7 8 9 10 11 ... 50 >  currentPage  = 7
       pagers() {
-        const pagerCount = this.pagerCount;  //  11 猜测一共显示11个数字，不包括...以及上下一页
+        const pagerCount = this.pagerCount;// 11 猜测一共显示11个数字，不包括...以及上下一页
         const halfPagerCount = (pagerCount - 1) / 2;
 
         const currentPage = Number(this.currentPage);
@@ -149,9 +154,10 @@
 
         const array = [];
 
-         // 如果有more的话，具体是四种情况的哪一种
+        // 如果有more的话，具体是四种情况的哪一种
+        // 左边一定是在最靠近1的右边出现，右边出现...同理也一定是在最靠近total数的左边
         if (showPrevMore && !showNextMore) {
-          //  41 = 50 - (11 - 2)
+          // 41 = 50 - (11 - 2)
           const startPage = pageCount - (pagerCount - 2);
           // pageCount 50
           for (let i = startPage; i < pageCount; i++) {
